@@ -1,10 +1,10 @@
 package steps
 
 type CommandModel struct {
-	ProjectPath string
-	Extensions  []string
-	License     string
-	Ignore      []string
+	ProjectPath string            `yaml:"project"`
+	Extensions  []string          `yaml:"extensions"`
+	License     string            `yaml:"license"`
+	Ignore      []string          `yaml:"ignore"`
+	Template    map[string]string `yaml:"template"`
 	LicenseText []byte
-	Template    map[string]string
 }
