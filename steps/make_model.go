@@ -87,6 +87,7 @@ func (m *CommandModel) MakeModel(args []string) {
 			i++
 		case utils.REMOVE:
 			m.RemoveFlag = true
+			i++
 		default:
 			i++
 		}
