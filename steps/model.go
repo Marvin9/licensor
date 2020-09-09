@@ -7,4 +7,5 @@ type CommandModel struct {
 	Ignore      []string          `yaml:"ignore"`
 	Template    map[string]string `yaml:"template"`
 	LicenseText []byte
+	RemoveFlag  bool
 }

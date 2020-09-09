@@ -10,10 +10,12 @@ func main() {
 	var model steps.CommandModel
 	model.MakeModel(os.Args)
 	model.Validate()
-	lc := model.LoadLicense()
-	lc = model.InjectVariable(lc)
-	lc = model.Pretty(lc)
-	model.LicenseText = lc
+	if !model.RemoveFlag {
+		lc := model.LoadLicense()
+		lc = model.InjectVariable(lc)
+		lc = model.Pretty(lc)
+		model.LicenseText = lc
+	}
 
 	model.Start()
 }

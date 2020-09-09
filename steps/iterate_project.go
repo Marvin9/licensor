@@ -67,12 +67,14 @@ func (m *CommandModel) iterateDirectory(path string) {
 			endOfComment := bytes.Index(fileContent, []byte(commentPostfix))
 			oldLicenseText := bytes.TrimPrefix(fileContent[licenseAlreadyExist:endOfComment], uniqueHeader)
 
-			null := []byte("")
-			t1 := spaceNextLineRegex.ReplaceAll(oldLicenseText, null)
-			t2 := spaceNextLineRegex.ReplaceAll(m.LicenseText, null)
-			if bytes.Equal(t1, t2) {
-				// BOTH ARE SAME LICENSE SO NO NEED TO CHANGE
-				continue
+			if !m.RemoveFlag {
+				null := []byte("")
+				t1 := spaceNextLineRegex.ReplaceAll(oldLicenseText, null)
+				t2 := spaceNextLineRegex.ReplaceAll(m.LicenseText, null)
+				if bytes.Equal(t1, t2) {
+					// BOTH ARE SAME LICENSE SO NO NEED TO CHANGE
+					continue
+				}
 			}
 
 			lastIdx := endOfComment + len(commentPostfix) - 1
@@ -97,7 +99,9 @@ func (m *CommandModel) iterateDirectory(path string) {
 		//
 		// actual code
 		// -----------------------------------------------------------
-		fileToInjectLicense.WriteString(fmt.Sprintf("%v%v\n%v\n%v\n\n", commentPrefix, utils.UniqueIdentifier, string(m.LicenseText), commentPostfix))
+		if !m.RemoveFlag {
+			fileToInjectLicense.WriteString(fmt.Sprintf("%v%v\n%v\n%v\n\n", commentPrefix, utils.UniqueIdentifier, string(m.LicenseText), commentPostfix))
+		}
 		fileToInjectLicense.Write(fileContent)
 		fileToInjectLicense.Close()
 

@@ -10,10 +10,11 @@ const (
 	LICENSE  = "-license"
 	IGNORE   = "-ignore"
 	TEMPLATE = "-template"
+	REMOVE   = "-remove"
 )
 
 var Commands = []string{
-	PROJECT, EXT, LICENSE, IGNORE, TEMPLATE,
+	PROJECT, EXT, LICENSE, IGNORE, TEMPLATE, REMOVE,
 }
 
 var SupportedFileExtensions = []string{

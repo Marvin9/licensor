@@ -83,6 +83,8 @@ func (m *CommandModel) MakeModel(args []string) {
 				utils.LogError(err)
 			}
 			i++
+		case utils.REMOVE:
+			m.RemoveFlag = true
 		default:
 			i++
 		}
