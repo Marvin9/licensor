@@ -22,7 +22,8 @@ func IsKeywordCommand(str string) bool {
 
 // IsValidExtension will check if given extension is supported or not.
 func IsValidExtension(ext string) bool {
-	return Exists(ext, SupportedFileExtensions)
+	_, ok := SupportedComments[ext]
+	return ok
 }
 
 // GetExtension will give extension without dot

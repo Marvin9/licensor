@@ -54,9 +54,8 @@ func (m *CommandModel) iterateDirectory(path string) {
 			utils.LogError(err)
 		}
 
-		// TODO: GENERATE COMMENT PREFIX & POSTFIX BASED ON EXTENSION
-		commentPrefix := "/* "
-		commentPostfix := "*/"
+		// GENERATE COMMENT PREFIX & POSTFIX BASED ON EXTENSION
+		commentPrefix, commentPostfix := utils.Comment(ext)
 
 		uniqueHeader := append([]byte(commentPrefix), []byte(utils.UniqueIdentifier)...)
 
@@ -109,6 +108,6 @@ func (m *CommandModel) iterateDirectory(path string) {
 		fileToInjectLicense.Close()
 
 		// DONE!
-		fmt.Printf("\nFile updated: %v\n", fullpath)
+		fmt.Printf("\nFile updated: %v", fullpath)
 	}
 }
