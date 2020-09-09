@@ -1,7 +1,7 @@
 .PHONY:run
 run:
 	clear
-	sh ./banner.sh
+	sh ./scripts/banner.sh
 	@echo "------------------"
 	go run main.go $(ARGS)
 
