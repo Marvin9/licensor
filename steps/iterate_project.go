@@ -82,6 +82,8 @@ func (m *CommandModel) iterateDirectory(path string) {
 			// REMOVE EXISTING LICENSE
 			fileContent = append(fileContent[0:licenseAlreadyExist], fileContent[lastIdx+1:len(fileContent)]...)
 			fileContent = bytes.TrimPrefix(fileContent, []byte("\n\n"))
+		} else if m.RemoveFlag {
+			continue
 		}
 
 		fileToInjectLicense, err := os.OpenFile(fullpath, os.O_WRONLY, os.ModePerm)
