@@ -16,6 +16,10 @@ func (m *CommandModel) Validate() {
 		utils.LogError("You must provide atleast one valid extension to -ext flag.")
 	}
 
+	if m.ProjectPath == "" {
+		m.ProjectPath = "."
+	}
+
 	// project path must exist
 	projectDir, err := os.Stat(m.ProjectPath)
 	if err != nil {
