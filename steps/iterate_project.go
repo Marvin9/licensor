@@ -6,17 +6,23 @@ import (
 	"io/ioutil"
 	"os"
 	"regexp"
+	"sync"
 
 	"github.com/Marvin9/licensor/utils"
 )
 
 var spaceNextLineRegex = regexp.MustCompile(`\s+|\n`)
 
+var wg sync.WaitGroup
+
 func (m *CommandModel) Start() {
-	m.iterateDirectory(m.ProjectPath)
+	wg.Add(1)
+	go m.iterateDirectory(m.ProjectPath)
+	wg.Wait()
 }
 
 func (m *CommandModel) iterateDirectory(path string) {
+	defer wg.Done()
 	files, err := ioutil.ReadDir(path)
 	if err != nil {
 		utils.LogError(err)
@@ -27,7 +33,8 @@ func (m *CommandModel) iterateDirectory(path string) {
 		fullpath := path + "/" + filename
 		if file.IsDir() {
 			// TODO: IGNORE GIVEN DIRECTORIES
-			m.iterateDirectory(fullpath)
+			wg.Add(1)
+			go m.iterateDirectory(fullpath)
 			continue
 		}
 
@@ -78,7 +85,8 @@ func (m *CommandModel) iterateDirectory(path string) {
 		if err != nil {
 			utils.LogError(err)
 		}
-		defer fileToInjectLicense.Close()
+		fileToInjectLicense.Truncate(0)
+		fileToInjectLicense.Seek(0, 0)
 
 		// COMMENT OUT LICENSE TEXT
 		// ---------------------- template --------------------------
@@ -91,6 +99,7 @@ func (m *CommandModel) iterateDirectory(path string) {
 		// -----------------------------------------------------------
 		fileToInjectLicense.WriteString(fmt.Sprintf("%v%v\n%v\n%v\n\n", commentPrefix, utils.UniqueIdentifier, string(m.LicenseText), commentPostfix))
 		fileToInjectLicense.Write(fileContent)
+		fileToInjectLicense.Close()
 
 		// DONE!
 		fmt.Printf("\nFile updated: %v\n", fullpath)
