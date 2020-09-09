@@ -1,5 +1,6 @@
 package steps
 
+// CommandModel is used to control input
 type CommandModel struct {
 	ProjectPath string            `yaml:"project"`
 	Extensions  []string          `yaml:"extensions"`

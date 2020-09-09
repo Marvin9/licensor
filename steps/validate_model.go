@@ -7,6 +7,10 @@ import (
 	"github.com/Marvin9/licensor/utils"
 )
 
+// Validate command model
+// 1. -ext should have atleast 1 value, otherwise command will ignore all files
+// 2. path given in -project flag must be directory and must exist
+// 3. for given -ext, they should be valid and implemented in our app
 func (m *CommandModel) Validate() {
 	if len(m.Extensions) == 0 {
 		utils.LogError("You must provide atleast one valid extension to -ext flag.")

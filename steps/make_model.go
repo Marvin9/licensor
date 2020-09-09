@@ -25,6 +25,8 @@ import (
 		year: 2020
 */
 
+// MakeModel will generate CommandModel based on given argument
+// OR yml file
 func (m *CommandModel) MakeModel(args []string) {
 	mainArgs := args[1:]
 	i := 0

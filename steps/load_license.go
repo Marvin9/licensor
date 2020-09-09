@@ -9,6 +9,11 @@ import (
 	"github.com/Marvin9/licensor/utils"
 )
 
+// LoadLicense will store license text in CommandModel
+// given value for -license flag
+// 1. It will open and read file, if exist
+// 2. If not then it will request on http
+// if both not exist, give error
 func (m *CommandModel) LoadLicense() []byte {
 	var licenseText []byte
 	_, errPath := os.Stat(m.License)

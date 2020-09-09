@@ -8,6 +8,10 @@ import (
 	"github.com/Marvin9/licensor/utils"
 )
 
+// InjectVariable will replace template string with variables
+// for example string: I am {{name}}
+// now inside CommandModel m: m.Template["name"] = "Mayur"
+// output: I am Mayur
 func (m *CommandModel) InjectVariable(licenseText []byte) []byte {
 	templateReg := regexp.MustCompile(`{{[[:alpha:]]+}}`)
 	templateMatches := templateReg.FindAll(licenseText, -1)
