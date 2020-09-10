@@ -13,6 +13,15 @@ push:
 	git push origin master
 
 .PHONY:test
-test:
+test: test-env
+	sh ./scripts/test.sh
+	make drop-test-env
+
+.PHONY:test-env
+test-env:
 	clear
-	go test ./...
+	sh ./scripts/test-env.sh
+
+.PHONY:drop-test-env
+drop-test-env:
+	MODE="DROP" sh ./scripts/test-env.sh
