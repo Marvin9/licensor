@@ -77,14 +77,9 @@ func (m *CommandModel) iterateDirectory(path string) {
 			// PROCESS TO CHECK CURRENT LICENSE IS NOT EQUAL TO PREVIOUS ONE
 
 			var endOfComment int
-			if commentPostfix == commentPrefix[0:len(commentPostfix)] {
-				firstInd := bytes.Index(fileContent, []byte(commentPrefix))
-				firstInd += len(commentPrefix)
-				endOfComment = bytes.Index(fileContent[firstInd:], []byte(commentPostfix))
-				endOfComment += len(commentPrefix)
-			} else {
-				endOfComment = bytes.Index(fileContent, []byte(commentPostfix))
-			}
+			uniqueHeaderLen := len(uniqueHeader)
+			endOfComment = bytes.Index(fileContent[licenseAlreadyExist+uniqueHeaderLen:], []byte(commentPostfix))
+			endOfComment += licenseAlreadyExist + uniqueHeaderLen
 			oldLicenseText := bytes.TrimPrefix(fileContent[licenseAlreadyExist:endOfComment], uniqueHeader)
 
 			if !m.RemoveFlag {
