@@ -52,7 +52,7 @@ Coming soon.
             </code>
             <br/>
             <code>
-                licensor -license https://gist.githubusercontent.com/Marvin9/ea5bb6b292cdccd7deb21d11509fcc56/raw/0ea1894244767b8f4ebf3644647524eb664807c9/Apache-2
+                licensor -license url-that-returns-license-text
             </code>
         </td>
         <td>true</td>
