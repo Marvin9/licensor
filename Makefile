@@ -5,6 +5,19 @@ run:
 	@echo "------------------"
 	go run main.go $(ARGS)
 
+.PHONY:build
+build:
+	go build
+
+.PHONY:global
+global: build
+	sudo cp licensor /usr/local/bin
+	rm licensor
+
+.PHONY:keep-binary
+keep-binary: build
+	sh ./scripts/keep-binary.sh
+
 .PHONY:push
 push:
 	clear
