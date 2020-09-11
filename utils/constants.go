@@ -32,3 +32,13 @@ var Commands = []string{
 var SupportedFileExtensions = []string{
 	"go", "c", "cpp", "js", "css",
 }
+
+// IgnoreDirs - directories that will be ignored by default
+var IgnoreDirs = []string{
+	"node_modules", ".git",
+}
+
+// ShouldIgnoreDir - whether dir should be ignored by default
+func ShouldIgnoreDir(dir string) bool {
+	return Exists(dir, IgnoreDirs)
+}

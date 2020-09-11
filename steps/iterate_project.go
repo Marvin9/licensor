@@ -5,6 +5,7 @@ import (
 	"fmt"
 	"io/ioutil"
 	"os"
+	"path/filepath"
 	"regexp"
 	"sync"
 
@@ -32,8 +33,18 @@ func (m *CommandModel) iterateDirectory(path string) {
 	for _, file := range files {
 		filename := file.Name()
 		fullpath := path + "/" + filename
+		base := filepath.Base(fullpath)
+
+		if utils.ShouldIgnoreDir(base) {
+			continue
+		}
+
+		if utils.Exists(fullpath, m.Ignore) {
+			fmt.Println(fullpath)
+			continue
+		}
+
 		if file.IsDir() {
-			// TODO: IGNORE GIVEN DIRECTORIES
 			wg.Add(1)
 			go m.iterateDirectory(fullpath)
 			continue
@@ -108,6 +119,6 @@ func (m *CommandModel) iterateDirectory(path string) {
 		fileToInjectLicense.Close()
 
 		// DONE!
-		fmt.Printf("\nFile updated: %v", fullpath)
+		// fmt.Printf("\nFile updated: %v", fullpath)
 	}
 }
