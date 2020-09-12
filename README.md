@@ -116,3 +116,7 @@ ignore:
  - ./foo [directory]
  - ./bar/baz.go [file]
 ```
+
+### Demo
+
+![](./assets/demo_licensor.gif)
