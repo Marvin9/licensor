@@ -4,11 +4,24 @@
 
 ### Installation
 
-Coming soon.
+[Download latest binary.](https://github.com/Marvin9/licensor/releases/latest)
+
+![](https://img.shields.io/github/v/release/Marvin9/licensor?label=latest)
+
+**Linux**
+
+Unzip download and make command access global.
+
+```sudo mv /path/to/zip/licensor /usr/local/bin```
 
 ### Usage
 
+
 **Using command line**
+
+```
+licensor -project ./ -ext go js -license ./LICENSE.md
+```
 
 <table>
     <tr>
@@ -40,6 +53,7 @@ Coming soon.
             </code>
         </td>
         <td>true</td>
+        <td></td>
     </tr>
     <tr>
         <td>-license</td>
@@ -56,6 +70,7 @@ Coming soon.
             </code>
         </td>
         <td>true</td>
+        <td></td>
     </tr>
     <tr>
         <td>-template</td>
@@ -76,10 +91,15 @@ Coming soon.
             </code>
         </td>
         <td>false</td>
+        <td></td>
     </tr>
 </table>
 
 **Using YML**
+
+```
+licensor
+```
 
 - licensor.yml
 ```yml
