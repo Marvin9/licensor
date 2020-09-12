@@ -4,26 +4,11 @@ import (
 	"encoding/json"
 	"fmt"
 	"io/ioutil"
+	"os"
 
 	"github.com/Marvin9/licensor/utils"
 	"gopkg.in/yaml.v2"
 )
-
-/*
-.yml
-	project: .
-	extensions:
-		- go
-		- c
-		- cpp
-	license: ./your-template.txt
-	ignore:
-		- main.go
-		- final.go
-	template:
-		name: mayur
-		year: 2020
-*/
 
 // MakeModel will generate CommandModel based on given argument
 // OR yml file
@@ -88,6 +73,9 @@ func (m *CommandModel) MakeModel(args []string) {
 		case utils.REMOVE:
 			m.RemoveFlag = true
 			i++
+		case utils.HELP:
+			fmt.Print(utils.HelpDocs)
+			os.Exit(0)
 		default:
 			i++
 		}

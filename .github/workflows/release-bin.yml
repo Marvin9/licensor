@@ -1,0 +1,22 @@
+name: "Release"
+
+on:
+    push:
+        tags:
+            - "v*"
+
+jobs:
+    release:
+        name: "Releasing binary"
+        runs-on: "ubuntu-latest"
+        steps:
+            - name: "Build & Keep binary only"
+              run: |
+                make keep-binary
+
+            - uses: "marvinpinto/action-automatic-releases@latest"
+              with:
+                repo_token: "${{ secrets.GITHUB_TOKEN }}"
+                prerelease: false
+                files: |
+                    licensor

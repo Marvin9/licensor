@@ -20,7 +20,30 @@ const (
 	TEMPLATE = "-template"
 	// REMOVE: -remove
 	REMOVE = "-remove"
+	// HELP: -help
+	HELP = "-help"
 )
+
+// HelpDocs docs of flags
+const HelpDocs = `
+usage: licensor [-project <project directory>] (optional) (default: "./")
+		[-ext <file extension which you want to add header>...] (required at least one extension)
+		[-license <path or url of license template you want to inject>] (required)
+		[-template <json string of variables for license template>] (required only if it is in license template)
+		[-ignore <relative path of file(s)/dir(s) to ignore>] (optional)
+		[-remove] (optional)
+
+example:
+1. licensor -project ./\
+		-ext go py c cpp\ 
+		-license ./Apache-2.txt\ 
+		-template '{\"owner\": \"foo\",\"year\":\"bar\"}'
+		-ignore ./foo ./bar/foo.go
+
+2. licensor -ext go -license ./Static.txt
+3. licensor -remove -ext go py [Remove license header from go and python files]
+4. licensor [this will follow licensor.yml file]
+`
 
 // Commands - valid commands
 var Commands = []string{
