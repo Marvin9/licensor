@@ -2,6 +2,12 @@
 
 > Inject custom license header in your source code, quickly.
 
+### Features
+
+- You can add custom license header to infinite files automatically.
+- If you want to change license, you can. Just minor modification is required in configuration.
+- You can also remove all the license header that was added by licensor.
+
 ### Installation
 
 [Download latest binary.](https://github.com/Marvin9/licensor/releases/latest)
@@ -10,7 +16,7 @@
 
 **Linux**
 
-Unzip download and make command access global.
+Unzip download and make binary access global.
 
 ```sudo mv /path/to/zip/licensor /usr/local/bin```
 
@@ -109,9 +115,12 @@ extensions: #[required]
  - py
  - c
 license: #[license file path or url] [required]
+# Example license template:
+# Copyright {{year}} {{owner}}
+# template should be
 template:
- foo: bar
- baz: bak
+ year: 2020
+ owner: Mayursinh Sarvaiya
 ignore:
  - ./foo #[directory]
  - ./bar/baz.go #[file]
