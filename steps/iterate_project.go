@@ -92,6 +92,13 @@ func (m *CommandModel) iterateDirectory(path string) {
 			continue
 		}
 
+		fmt.Print("\u001b[2K") // clear entire line
+		fmt.Print("\033[u")    // restore cursor position (position where porgram started)
+		fmt.Print("\u001b[2K") // clear entire line [to eliminate overflow issues]
+		fmt.Print("\u001b[0G") // place cursor to 0th position
+		fmt.Print(fullpath)
+		fmt.Print("\u001b[0G")
+
 		fileToInjectLicense, err := os.OpenFile(fullpath, os.O_WRONLY, os.ModePerm)
 		if err != nil {
 			utils.LogError(err)
