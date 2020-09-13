@@ -20,7 +20,9 @@ func (m *CommandModel) MakeModel(args []string) {
 	if mainArgsLen == 0 {
 		yamlContent, err := ioutil.ReadFile(utils.LicensorYAML)
 		if err != nil {
-			utils.LogError(fmt.Sprintf("%v does not exist.", utils.LicensorYAML))
+			utils.LogError(fmt.Sprintf(`
+%v file does not exist. 
+Read https://github.com/Marvin9/licensor/README.md or licensor -help`, utils.LicensorYAML))
 		}
 		err = yaml.Unmarshal(yamlContent, m)
 		if err != nil {

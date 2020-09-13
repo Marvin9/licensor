@@ -24,7 +24,8 @@ func (m *CommandModel) InjectVariable(licenseText []byte) []byte {
 		variableName := matchStr[2 : len(matchStr)-2]
 		variableValue, defined := m.Template[variableName]
 		if !defined {
-			utils.LogError(fmt.Sprintf("%v is not defined in template.", variableName))
+			utils.LogError(fmt.Sprintf(`
+%v is not defined in -template but required in %v.`, variableName, m.License))
 		}
 		licenseText = bytes.Replace(licenseText, match, []byte(variableValue), 1)
 	}

@@ -40,7 +40,6 @@ func (m *CommandModel) iterateDirectory(path string) {
 		}
 
 		if utils.Exists(fullpath, m.Ignore) {
-			fmt.Println(fullpath)
 			continue
 		}
 

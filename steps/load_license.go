@@ -19,7 +19,8 @@ func (m *CommandModel) LoadLicense() []byte {
 	var licenseText []byte
 	_, errPath := os.Stat(m.License)
 
-	licenseFileError := fmt.Sprintf("%v is neither valid path nor valid url.", m.License)
+	licenseFileError := fmt.Sprintf(`
+%v is neither valid path nor valid url.`, m.License)
 
 	if errPath != nil {
 		res, errURL := http.Get(m.License)
@@ -30,7 +31,8 @@ func (m *CommandModel) LoadLicense() []byte {
 		rd, errURL := ioutil.ReadAll(res.Body)
 		emptyByte := []byte("")
 		if bytes.Equal(rd, emptyByte) {
-			utils.LogError(fmt.Sprintf("Tried %v as URL, It returned empty text.", m.License))
+			utils.LogError(fmt.Sprintf(`
+URL %v returns empty text.`, m.License))
 		}
 		res.Body.Close()
 		if errURL != nil {
