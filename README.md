@@ -103,18 +103,18 @@ licensor
 
 - licensor.yml
 ```yml
-project: [project directory path] [default: "./"]
-extensions: [required]
+project: #[project directory path] [default: "./"]
+extensions: #[required]
  - go
  - py
  - c
-license: [license file path or url] [required]
+license: #[license file path or url] [required]
 template:
  foo: bar
  baz: bak
 ignore:
- - ./foo [directory]
- - ./bar/baz.go [file]
+ - ./foo #[directory]
+ - ./bar/baz.go #[file]
 ```
 
 ### Demo
