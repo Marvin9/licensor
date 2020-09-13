@@ -7,24 +7,18 @@ import (
 	"os"
 	"path/filepath"
 	"regexp"
-	"sync"
 
 	"github.com/Marvin9/licensor/utils"
 )
 
 var spaceNextLineRegex = regexp.MustCompile(`\s+|\n`)
 
-var wg sync.WaitGroup
-
 // Start is main function to iterate in project and inject license
 func (m *CommandModel) Start() {
-	wg.Add(1)
-	go m.iterateDirectory(m.ProjectPath)
-	wg.Wait()
+	m.iterateDirectory(m.ProjectPath)
 }
 
 func (m *CommandModel) iterateDirectory(path string) {
-	defer wg.Done()
 	files, err := ioutil.ReadDir(path)
 	if err != nil {
 		utils.LogError(err)
@@ -44,8 +38,7 @@ func (m *CommandModel) iterateDirectory(path string) {
 		}
 
 		if file.IsDir() {
-			wg.Add(1)
-			go m.iterateDirectory(fullpath)
+			m.iterateDirectory(fullpath)
 			continue
 		}
 
