@@ -53,7 +53,10 @@ var Commands = []string{
 // SupportedFileExtensions - files which we can inject comment (From our side)
 // Each may have different multiline comment syntax
 var SupportedFileExtensions = []string{
-	"go", "c", "cpp", "js", "css",
+	"html", "js", "jsx", "tsx", "css",
+	"py", "java", "rb", "c", "cpp", "cs",
+	"m", "go", "swift", "clj", "ts", "dart",
+	"elm", "groovy", "hs", "kt", "rs",
 }
 
 // IgnoreDirs - directories that will be ignored by default

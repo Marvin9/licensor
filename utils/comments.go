@@ -7,6 +7,8 @@ const commonPostfix = "*/"
 var SupportedComments = map[string]([2]string){
 	"html":   [2]string{"<!-- ", "-->"},
 	"js":     [2]string{commonPrefix, commonPostfix},
+	"jsx":    [2]string{commonPrefix, commonPostfix},
+	"tsx":    [2]string{commonPrefix, commonPostfix},
 	"css":    [2]string{commonPrefix, commonPostfix},
 	"py":     [2]string{"\"\"\"\n", "\"\"\""},
 	"java":   [2]string{commonPrefix, commonPostfix},
