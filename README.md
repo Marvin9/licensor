@@ -14,11 +14,25 @@
 
 ![](https://img.shields.io/github/v/release/Marvin9/licensor?label=latest)
 
-**Linux**
+Unzip tar 
 
-Unzip download and make binary access global.
+**Linux/MacOS**
 
-```sudo mv /path/to/zip/licensor /usr/local/bin```
+make binary access global.
+
+```
+sudo mv /path/to/zip/licensor /usr/local/bin
+```
+
+**Windows**
+
+create folder to store licensor.exe at any stable place and set path in environment.
+
+Suppose licensor.exe is at ```C:\licensor\licensor.exe```
+
+```
+SET "PATH=C:\licensor;%PATH%"
+```
 
 ### Usage
 
@@ -36,6 +50,17 @@ licensor -project ./ -ext go js -license ./LICENSE.md
         <th>Example</th>
         <th>Required</th>
         <th>Default</th>
+    </tr>
+    <tr>
+        <td>-help</td>
+        <td>.</td>
+        <td>
+            <code>
+                licensor -help
+            </code>
+        </td>
+        <td>false</td>
+        <td></td>
     </tr>
     <tr>
         <td>-project</td>
@@ -127,5 +152,7 @@ ignore:
 ```
 
 ### Demo
+
+> Experiment on kubernetes 10000+ go files.
 
 ![](./assets/demo_licensor.gif)
