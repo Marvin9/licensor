@@ -153,6 +153,15 @@ ignore:
 
 ### Demo
 
-> Experiment on kubernetes 10000+ go files.
+> Experiment on kubernetes 8000+ go files.
 
-![](./assets/demo_licensor.gif)
+![](./assets/licensor_demo.gif)
+
+***Commands used***:
+```
+# to inject license header
+licensor -ext go -license ./LICENSE -ignore ./vendor
+
+# to remove license header
+licensor -ext go -remove -ignore ./vendor
+```
