@@ -114,12 +114,11 @@ func (m *CommandModel) iterateDirectory(path string) {
 		}
 
 		if !utils.IsWindows {
-			fmt.Print("\u001b[2K") // clear entire line
-			fmt.Print("\033[u")    // restore cursor position (position where porgram started)
-			fmt.Print("\u001b[2K") // clear entire line [to eliminate overflow issues]
-			fmt.Print("\u001b[0G") // place cursor to 0th position
-			fmt.Print(fullpath)
-			fmt.Print("\u001b[0G")
+			// \u001b[2K => clear entire line
+			// \033[u    => restore cursor position (position where porgram started)
+			// \u001b[2K => clear entire line [to eliminate overflow issues]
+			// \u001b[0G => place cursor to 0th position
+			fmt.Printf("\u001b[2K\033[u\u001b[2K\u001b[0G%v\u001b[0G", fullpath)
 		}
 
 		fileToInjectLicense := file
