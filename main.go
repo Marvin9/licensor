@@ -3,6 +3,7 @@ package main
 import (
 	"fmt"
 	"os"
+	"runtime"
 
 	"github.com/Marvin9/licensor/utils"
 
@@ -10,7 +11,7 @@ import (
 )
 
 func main() {
-	if os.Getenv("GOOS") == "windows" {
+	if runtime.GOOS == "windows" {
 		utils.IsWindows = true
 	}
 
