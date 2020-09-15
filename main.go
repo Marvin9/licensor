@@ -4,12 +4,22 @@ import (
 	"fmt"
 	"os"
 
+	"github.com/Marvin9/licensor/utils"
+
 	"github.com/Marvin9/licensor/steps"
 )
 
 func main() {
-	fmt.Print("\033[s")    // save cursor position
-	fmt.Print("\033[?25l") // hide cursor
+	if os.Getenv("GOOS") == "windows" {
+		utils.IsWindows = true
+	}
+
+	if !utils.IsWindows {
+		fmt.Print("\033[s")    // save cursor position
+		fmt.Print("\033[?25l") // hide cursor
+	} else {
+		fmt.Print("Working...")
+	}
 
 	// find . | grep -i "\(\.go\|\.sh\)$" | wc -l
 
@@ -26,8 +36,10 @@ func main() {
 	model.Start()
 
 	// https://www.lihaoyi.com/post/BuildyourownCommandLinewithANSIescapecodes.html#completeness
-	fmt.Print("\u001b[2K")
-	fmt.Print("\u001b[0G")
+	if !utils.IsWindows {
+		fmt.Print("\u001b[2K")
+		fmt.Print("\u001b[0G")
+	}
 	fmt.Println("✔️")
-	fmt.Print("\033[?25h")
+	utils.ShowCursor()
 }

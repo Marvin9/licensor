@@ -77,6 +77,7 @@ Read https://github.com/Marvin9/licensor/README.md or licensor -help`, utils.Lic
 			i++
 		case utils.HELP:
 			fmt.Print(utils.HelpDocs)
+			utils.ShowCursor()
 			os.Exit(0)
 		default:
 			i++

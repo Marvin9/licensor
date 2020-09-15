@@ -8,6 +8,7 @@ import (
 // LogError will log error and exit with code 1
 func LogError(msg interface{}) {
 	fmt.Printf("Error: %v\n", msg)
+	ShowCursor()
 	os.Exit(1)
 }
 

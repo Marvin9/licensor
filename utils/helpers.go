@@ -1,6 +1,7 @@
 package utils
 
 import (
+	"fmt"
 	"path/filepath"
 	"strings"
 )
@@ -30,4 +31,11 @@ func IsValidExtension(ext string) bool {
 func GetExtension(file string) string {
 	ext := filepath.Ext(file)
 	return strings.TrimPrefix(ext, ".")
+}
+
+// ShowCursor in terminal
+func ShowCursor() {
+	if !IsWindows {
+		fmt.Print("\033[?25h")
+	}
 }

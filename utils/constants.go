@@ -68,3 +68,6 @@ var IgnoreDirs = []string{
 func ShouldIgnoreDir(dir string) bool {
 	return Exists(dir, IgnoreDirs)
 }
+
+// IsWindows - GOOS
+var IsWindows = false
