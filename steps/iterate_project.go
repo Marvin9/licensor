@@ -50,20 +50,39 @@ func (m *CommandModel) iterateDirectory(path string) {
 		}
 
 		// PROCESS FILE
-
-		// GET FILE CONTENT
-		fileContent, err := ioutil.ReadFile(fullpath)
-		if err != nil {
-			utils.LogError(err)
-		}
-
 		// GENERATE COMMENT PREFIX & POSTFIX BASED ON EXTENSION
 		commentPrefix, commentPostfix := utils.Comment(ext)
 
 		uniqueHeader := append([]byte(commentPrefix), []byte(utils.UniqueIdentifier)...)
 
-		// CHECK IF THERE IS ALREADY LICENSE GENERATED PREVIOUSLY
-		licenseAlreadyExist := bytes.Index(fileContent, uniqueHeader)
+		buffer := make([]byte, 512)
+		file, err := os.OpenFile(fullpath, os.O_RDWR, os.ModePerm)
+		if err != nil {
+			utils.LogError(err)
+		}
+
+		var fileContent []byte
+		var licenseAlreadyExist = -1
+		for {
+			read, err := file.Read(buffer)
+			if err != nil {
+				break
+			}
+
+			content := buffer[:read]
+			fileContent = append(fileContent, content...)
+
+			if licenseAlreadyExist == -1 {
+				exist := bytes.Index(content, uniqueHeader)
+				if exist != -1 {
+					licenseAlreadyExist = exist
+				}
+			}
+
+			if read == 0 {
+				break
+			}
+		}
 
 		if licenseAlreadyExist != -1 {
 			// PROCESS TO CHECK CURRENT LICENSE IS NOT EQUAL TO PREVIOUS ONE
@@ -80,6 +99,7 @@ func (m *CommandModel) iterateDirectory(path string) {
 				t2 := spaceNextLineRegex.ReplaceAll(m.LicenseText, null)
 				if bytes.Equal(t1, t2) {
 					// BOTH ARE SAME LICENSE SO NO NEED TO CHANGE
+					file.Close()
 					continue
 				}
 			}
@@ -89,6 +109,7 @@ func (m *CommandModel) iterateDirectory(path string) {
 			fileContent = append(fileContent[0:licenseAlreadyExist], fileContent[lastIdx+1:len(fileContent)]...)
 			fileContent = bytes.TrimPrefix(fileContent, []byte("\n\n"))
 		} else if m.RemoveFlag {
+			file.Close()
 			continue
 		}
 
@@ -101,10 +122,7 @@ func (m *CommandModel) iterateDirectory(path string) {
 			fmt.Print("\u001b[0G")
 		}
 
-		fileToInjectLicense, err := os.OpenFile(fullpath, os.O_WRONLY, os.ModePerm)
-		if err != nil {
-			utils.LogError(err)
-		}
+		fileToInjectLicense := file
 		fileToInjectLicense.Truncate(0)
 		fileToInjectLicense.Seek(0, 0)
 
@@ -121,7 +139,7 @@ func (m *CommandModel) iterateDirectory(path string) {
 			fileToInjectLicense.WriteString(fmt.Sprintf("%v%v\n%v\n%v\n\n", commentPrefix, utils.UniqueIdentifier, string(m.LicenseText), commentPostfix))
 		}
 		fileToInjectLicense.Write(fileContent)
-		fileToInjectLicense.Close()
+		file.Close()
 
 		// DONE!
 		// fmt.Printf("\nFile updated: %v", fullpath)
