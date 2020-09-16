@@ -70,12 +70,13 @@ func (m *CommandModel) iterateDirectory(path string) {
 			}
 
 			content := buffer[:read]
+			fileContentBeforeAppend := len(fileContent)
 			fileContent = append(fileContent, content...)
 
 			if licenseAlreadyExist == -1 {
 				exist := bytes.Index(content, uniqueHeader)
 				if exist != -1 {
-					licenseAlreadyExist = exist
+					licenseAlreadyExist = exist + fileContentBeforeAppend
 				}
 			}
 
