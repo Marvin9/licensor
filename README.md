@@ -165,3 +165,4 @@ licensor -ext go -license ./LICENSE -ignore ./vendor
 # to remove license header
 licensor -ext go -remove -ignore ./vendor
 ```
+[Read article on medium](https://medium.com/@mayursinhsarvaiya/add-license-to-your-source-code-with-licensor-34590e8b18bd)
