@@ -5,6 +5,8 @@ const commonPostfix = "*/"
 
 // SupportedComments is mapping of language extension with syntax
 var SupportedComments = map[string]([2]string){
+	"h":      [2]string{commonPrefix, commonPostfix},
+	"hpp":    [2]string{commonPrefix, commonPostfix},
 	"html":   [2]string{"<!-- ", "-->"},
 	"js":     [2]string{commonPrefix, commonPostfix},
 	"jsx":    [2]string{commonPrefix, commonPostfix},
