@@ -150,7 +150,7 @@ func (m *CommandModel) iterateDirectory(path string) {
 		
 		//copy the value of the license to a temporary string
 		var finalString = string(m.LicenseText)
-		println(finalString)
+		//println(finalString)
 		if isSingleLine == true {
 			//add delimeter to the end of the file and comment it out
 			finalString = finalString + "\n" + commentPrefix + utils.DELIMITER	
