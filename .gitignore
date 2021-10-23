@@ -1,0 +1,4 @@
+# ignore the go binaries
+licensor
+licensor.yml
+LICENSE_HEADER
