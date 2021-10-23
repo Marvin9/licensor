@@ -7,6 +7,7 @@ import (
 	"os"
 	"path/filepath"
 	"regexp"
+	"strings"
 
 	"github.com/Marvin9/licensor/utils"
 )
@@ -52,8 +53,9 @@ func (m *CommandModel) iterateDirectory(path string) {
 		// PROCESS FILE
 		// GENERATE COMMENT PREFIX & POSTFIX BASED ON EXTENSION
 		commentPrefix, commentPostfix := utils.Comment(ext)
+		var isSingleLine bool = (commentPostfix == utils.SINGLE_LINE_COMMENTS)
 
-		uniqueHeader := append([]byte(commentPrefix), []byte(utils.UniqueIdentifier)...)
+		uniqueHeader := append([]byte(commentPrefix), []byte(utils.DELIMITER)...)
 
 		buffer := make([]byte, 512)
 		file, err := os.OpenFile(fullpath, os.O_RDWR, os.ModePerm)
@@ -68,9 +70,11 @@ func (m *CommandModel) iterateDirectory(path string) {
 			if err != nil {
 				break
 			}
-
+			//read the file content
 			content := buffer[:read]
+			//the length of the file before append
 			fileContentBeforeAppend := len(fileContent)
+			//the file content with the content appended
 			fileContent = append(fileContent, content...)
 
 			if licenseAlreadyExist == -1 {
@@ -90,7 +94,15 @@ func (m *CommandModel) iterateDirectory(path string) {
 
 			var endOfComment int
 			uniqueHeaderLen := len(uniqueHeader)
-			endOfComment = bytes.Index(fileContent[licenseAlreadyExist+uniqueHeaderLen:], []byte(commentPostfix))
+			var postfix string
+			//delimiter as the Index search
+			if isSingleLine == true{
+				postfix = commentPrefix + utils.DELIMITER 
+			}else{
+				postfix = utils.DELIMITER + commentPostfix 
+			}
+
+			endOfComment = bytes.Index(fileContent[licenseAlreadyExist+uniqueHeaderLen:], []byte(postfix))
 			endOfComment += licenseAlreadyExist + uniqueHeaderLen
 			oldLicenseText := bytes.TrimPrefix(fileContent[licenseAlreadyExist:endOfComment], uniqueHeader)
 
@@ -105,10 +117,10 @@ func (m *CommandModel) iterateDirectory(path string) {
 				}
 			}
 
-			lastIdx := endOfComment + len(commentPostfix) - 1
+			lastIdx := endOfComment + len(postfix) - 1
 			// REMOVE EXISTING LICENSE
-			fileContent = append(fileContent[0:licenseAlreadyExist], fileContent[lastIdx+1:len(fileContent)]...)
-			fileContent = bytes.TrimPrefix(fileContent, []byte("\n\n"))
+			fileContent = append(fileContent[0:licenseAlreadyExist], fileContent[lastIdx+1:]...)
+			fileContent = bytes.TrimPrefix(fileContent, []byte("\n"))
 		} else if m.RemoveFlag {
 			file.Close()
 			continue
@@ -121,11 +133,11 @@ func (m *CommandModel) iterateDirectory(path string) {
 			// \u001b[0G => place cursor to 0th position
 			fmt.Printf("\u001b[2K\033[u\u001b[2K\u001b[0G%v\u001b[0G", fullpath)
 		}
-
+		
 		fileToInjectLicense := file
 		fileToInjectLicense.Truncate(0)
 		fileToInjectLicense.Seek(0, 0)
-
+		
 		// COMMENT OUT LICENSE TEXT
 		// ---------------------- template --------------------------
 		// commentPrefix uniqueIdentifier
@@ -135,8 +147,29 @@ func (m *CommandModel) iterateDirectory(path string) {
 		//
 		// actual code
 		// -----------------------------------------------------------
+		
+		//copy the value of the license to a temporary string
+		var finalString = string(m.LicenseText)
+		println(finalString)
+		if isSingleLine == true {
+			//add delimeter to the end of the file and comment it out
+			finalString = finalString + "\n" + commentPrefix + utils.DELIMITER	
+			//add the unique identifier to the start of the license
+			finalString =  commentPrefix + utils.UniqueIdentifier + "\n" + finalString
+			//replace each newline with newline + comment
+			finalString = strings.ReplaceAll(finalString, "\n ", "\n"+commentPrefix+" ")
+		}else{
+			//add the delimeter to the end of the license
+			finalString = finalString + "\n" + utils.DELIMITER
+			//make the unique identifier as part of the string
+			finalString =  utils.UniqueIdentifier + "\n" + finalString
+
+
+		}
+		
+		
 		if !m.RemoveFlag {
-			fileToInjectLicense.WriteString(fmt.Sprintf("%v%v\n%v\n%v\n\n", commentPrefix, utils.UniqueIdentifier, string(m.LicenseText), commentPostfix))
+			fileToInjectLicense.WriteString(fmt.Sprintf("%v%v%v\n", commentPrefix + utils.DELIMITER + "\n", finalString, commentPostfix))
 		}
 		fileToInjectLicense.Write(fileContent)
 		file.Close()
